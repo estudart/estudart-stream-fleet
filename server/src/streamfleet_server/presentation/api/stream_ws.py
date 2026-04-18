@@ -5,7 +5,7 @@ from fastapi import WebSocket
 from starlette.websockets import WebSocketDisconnect
 
 from src.streamfleet_server.infrastructure.decoding.jpeg_bgr_decoder import decode_jpeg_base64_to_bgr
-from src.streamfleet_server.application.services.preview_window_service import (
+from src.streamfleet_server.presentation.app import (
     app,
     _DRONE_STREAM_WINDOW,
     _close_drone_stream_window,
