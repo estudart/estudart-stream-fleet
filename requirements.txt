@@ -1,0 +1,9 @@
+# Viewer: PYTHONPATH=server/src uvicorn streamfleet_server.presentation.app:app --port 8000
+fastapi
+uvicorn
+opencv-python
+numpy
+
+# Producer: PYTHONPATH=client python -m src.streamfleet_client
+websockets
+djitellopy

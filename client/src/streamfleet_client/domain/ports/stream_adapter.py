@@ -1,0 +1,21 @@
+from abc import ABC, abstractmethod
+
+
+class StreamAdapter(ABC):
+    """Port: video source (webcam, drone SDK, etc.)."""
+
+    @abstractmethod
+    def streamon(self) -> bool:
+        pass
+
+    @abstractmethod
+    def streamoff(self) -> bool:
+        pass
+
+    @abstractmethod
+    def get_frame_read(self):
+        pass
+
+    @abstractmethod
+    def get_battery(self):
+        pass
