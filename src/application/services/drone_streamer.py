@@ -23,8 +23,11 @@ class DroneStreamer:
 
     async def start_streaming(self):
         try:
-            self.stream_adapter.streamon()
+            if not self.stream_adapter.streamon():
+                return
             frame_read = self.stream_adapter.get_frame_read()
+            if frame_read is None:
+                return
 
             await self.websocket_adapter.stream(frame_read)
 

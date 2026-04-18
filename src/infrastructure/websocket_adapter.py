@@ -1,7 +1,5 @@
 import asyncio
 import websockets
-import base64
-import cv2
 
 from src.application.services.frame_decoder import FrameDecoder
 
@@ -24,6 +22,9 @@ class WebSocketAdapter:
                     continue
 
                 jpg_as_text = self.frame_decoder.decode(frame=frame)
+                if jpg_as_text is None:
+                    await asyncio.sleep(0.01)
+                    continue
                 await ws.send(jpg_as_text)
 
                 await asyncio.sleep(0.03)

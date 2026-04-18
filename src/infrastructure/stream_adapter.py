@@ -14,5 +14,5 @@ class StreamAdapter(ABC):
         pass
 
     @abstractmethod
-    def get_battery():
+    def get_battery(self):
         pass
