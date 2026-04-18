@@ -1,7 +1,5 @@
 import asyncio
 
-import cv2
-
 from src.infrastructure.stream_adapter import StreamAdapter
 from src.infrastructure.websocket_adapter import WebSocketAdapter
 
@@ -15,11 +13,7 @@ class DroneStreamer:
         self.websocket_adapter = websocket_adapter
 
     def stop_streaming(self):
-        try:
-            self.stream_adapter.streamoff()
-            cv2.destroyAllWindows()
-        except Exception as err:
-            print(f"Could not stop streaming, reason: {err}")
+        pass
 
     async def start_streaming(self):
         try:
@@ -33,5 +27,3 @@ class DroneStreamer:
 
         finally:
             self.stop_streaming()
-
-        

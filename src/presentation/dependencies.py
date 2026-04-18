@@ -19,7 +19,7 @@ def get_websocket_adapter():
     if _websocket_adapter is None:
         frame_decoder = get_frame_decoder()
         _websocket_adapter = WebSocketAdapter(
-            uri="ws://localhost:8765",
+            uri="ws://localhost:8000/v1/ws/stream",
             frame_decoder=frame_decoder)
     return _websocket_adapter
 
