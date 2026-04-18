@@ -8,12 +8,12 @@ from src.streamfleet_server.infrastructure.decoding.jpeg_bgr_decoder import deco
 from src.streamfleet_server.presentation.app import app
 from src.streamfleet_server.presentation.helpers import (
     _DRONE_STREAM_WINDOW,
-    _close_drone_stream_window,
+    close_preview_window_named,
 )
 
 
-@app.websocket("/v1/ws/stream")
-async def websocket_stream(websocket: WebSocket):
+@app.websocket("/v1/ws/test")
+async def terminal_test(websocket: WebSocket):
     await websocket.accept()
 
     client_id = id(websocket)
@@ -35,4 +35,4 @@ async def websocket_stream(websocket: WebSocket):
     except Exception as err:
         print(f"Connection closed: {err}")
     finally:
-        _close_drone_stream_window()
+        close_preview_window_named(window_name)

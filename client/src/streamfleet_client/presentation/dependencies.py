@@ -27,7 +27,7 @@ def get_websocket_sender():
     if _websocket_sender is None:
         frame_encoder = get_frame_encoder()
         _websocket_sender = WebSocketSender(
-            uri="ws://localhost:8000/v1/ws/stream",
+            uri="ws://localhost:8000/v1/ws/test",
             frame_encoder=frame_encoder,
         )
     return _websocket_sender

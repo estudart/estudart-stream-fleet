@@ -18,3 +18,13 @@ def _close_drone_stream_window() -> None:
     except cv2.error:
         pass
     cv2.waitKey(1)
+
+
+def close_preview_window_named(window_name: str) -> None:
+    """Tear down a single named HighGUI window (per WebSocket preview)."""
+    try:
+        cv2.destroyWindow(window_name)
+    except cv2.error:
+        pass
+    for _ in range(32):
+        cv2.waitKey(1)
