@@ -22,7 +22,8 @@ async def publish(websocket: WebSocket):
     await websocket.accept()
 
     client_id = id(websocket)
-    
+    print(client_id)
+
     publisher = get_publisher()
 
     try:

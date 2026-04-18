@@ -7,7 +7,7 @@ from src.streamfleet_server.presentation.app import app
 from src.streamfleet_server.presentation.dependencies import get_redis_adapter
 
 
-@app.websocket("/ws/subscribe")
+@app.websocket("/v1/ws/subscribe")
 async def subscribe(websocket: WebSocket):
     """
     Stream Redis pub/sub messages to the WebSocket client.

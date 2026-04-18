@@ -5,6 +5,7 @@ from src.streamfleet_client.application.services.drone_streamer import DroneStre
 from src.streamfleet_client.infrastructure.adapters.tello.tello_adapter import TelloAdapter
 from src.streamfleet_client.infrastructure.adapters.webcam_adapter import WebcamAdapter
 from src.streamfleet_client.infrastructure.encoding.frame_encoder import FrameEncoder
+from src.streamfleet_client.infrastructure.transport.websocket_consumer import WebSocketConsumer
 from src.streamfleet_client.infrastructure.transport.websocket_sender import WebSocketSender
 
 _tello_adapter: Optional[TelloAdapter] = None
@@ -13,6 +14,7 @@ _drone_streamer: Optional[DroneStreamer] = None
 _computer_streamer: Optional[ComputerStreamer] = None
 _websocket_sender: Optional[WebSocketSender] = None
 _frame_encoder: Optional[FrameEncoder] = None
+_websocket_consumers: dict[str, WebSocketConsumer] = {}
 
 
 def get_frame_encoder():
@@ -27,10 +29,18 @@ def get_websocket_sender():
     if _websocket_sender is None:
         frame_encoder = get_frame_encoder()
         _websocket_sender = WebSocketSender(
-            uri="ws://localhost:8000/v1/ws/test",
+            uri="ws://localhost:8000/v1/ws/publish",
             frame_encoder=frame_encoder,
         )
     return _websocket_sender
+
+
+def get_websocket_consumer(channel_id: str) -> WebSocketConsumer:
+    """Return a consumer for the given Redis/WebSocket channel (one instance per ``channel_id``)."""
+    global _websocket_consumers
+    if channel_id not in _websocket_consumers:
+        _websocket_consumers[channel_id] = WebSocketConsumer(channel_id=channel_id)
+    return _websocket_consumers[channel_id]
 
 
 def get_tello_adapter():
