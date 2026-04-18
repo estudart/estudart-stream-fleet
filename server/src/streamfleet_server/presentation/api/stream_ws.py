@@ -5,8 +5,8 @@ from fastapi import WebSocket
 from starlette.websockets import WebSocketDisconnect
 
 from src.streamfleet_server.infrastructure.decoding.jpeg_bgr_decoder import decode_jpeg_base64_to_bgr
-from src.streamfleet_server.presentation.app import (
-    app,
+from src.streamfleet_server.presentation.app import app
+from src.streamfleet_server.presentation.helpers import (
     _DRONE_STREAM_WINDOW,
     _close_drone_stream_window,
 )
@@ -16,7 +16,10 @@ from src.streamfleet_server.presentation.app import (
 async def websocket_stream(websocket: WebSocket):
     await websocket.accept()
 
-    cv2.namedWindow(_DRONE_STREAM_WINDOW, cv2.WINDOW_NORMAL)
+    client_id = id(websocket)
+    window_name = f"{_DRONE_STREAM_WINDOW}_{client_id}"
+
+    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
 
     try:
         while True:
@@ -24,7 +27,7 @@ async def websocket_stream(websocket: WebSocket):
             frame = decode_jpeg_base64_to_bgr(data)
             if frame is None:
                 continue
-            cv2.imshow(_DRONE_STREAM_WINDOW, frame)
+            cv2.imshow(window_name, frame)
             await asyncio.sleep(0)
             cv2.waitKey(1)
     except WebSocketDisconnect:
