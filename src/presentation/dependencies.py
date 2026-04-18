@@ -1,10 +1,14 @@
+from src.application.services.computer_streamer import ComputerStreamer
 from src.application.services.drone_streamer import DroneStreamer
 from src.application.services.frame_decoder import FrameDecoder
 from src.infrastructure.tello.tello_adapter import TelloAdapter
+from src.infrastructure.webcam_adapter import WebcamAdapter
 from src.infrastructure.websocket_adapter import WebSocketAdapter
 
 _tello_adapter: TelloAdapter = None
+_webcam_adapter: WebcamAdapter = None
 _drone_streamer: DroneStreamer = None
+_computer_streamer: ComputerStreamer = None
 _websocket_adapter: WebSocketAdapter = None
 _frame_decoder: FrameDecoder = None
 
@@ -29,6 +33,12 @@ def get_tello_adapter():
         _tello_adapter = TelloAdapter()
     return _tello_adapter
 
+def get_webcam_adapter():
+    global _webcam_adapter
+    if _webcam_adapter is None:
+        _webcam_adapter = WebcamAdapter(device_index=0)
+    return _webcam_adapter
+
 def get_drone_streamer():
     global _drone_streamer
     if _drone_streamer is None:
@@ -38,3 +48,13 @@ def get_drone_streamer():
             stream_adapter=stream_adapter,
             websocket_adapter=websocket_adapter)
     return _drone_streamer
+
+def get_computer_streamer():
+    global _computer_streamer
+    if _computer_streamer is None:
+        stream_adapter = get_webcam_adapter()
+        websocket_adapter = get_websocket_adapter()
+        _computer_streamer = ComputerStreamer(
+            stream_adapter=stream_adapter,
+            websocket_adapter=websocket_adapter)
+    return _computer_streamer
