@@ -1,10 +1,7 @@
-import asyncio
-
 from fastapi import WebSocket
-from starlette.websockets import WebSocketDisconnect
 
 from src.streamfleet_server.presentation.app import app
-from src.streamfleet_server.presentation.dependencies import get_redis_adapter
+from src.streamfleet_server.presentation.dependencies import get_consumer
 
 
 @app.websocket("/v1/ws/subscribe")
@@ -20,26 +17,8 @@ async def subscribe(websocket: WebSocket):
         await websocket.close(code=1008)
         return
 
-    redis = get_redis_adapter()
-    pubsub = redis.create_pubsub(channel)
-
-    try:
-        while True:
-            msg = await asyncio.to_thread(
-                lambda: pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0),
-            )
-            if not msg or msg.get("type") != "message":
-                continue
-            payload = msg.get("data")
-            if payload is None:
-                continue
-            await websocket.send_text(payload)
-    except WebSocketDisconnect:  # client disconnect
-        pass
-    except Exception as err:
-        print(f"Subscribe connection closed: {err}")
-    finally:
-        try:
-            pubsub.close()
-        except Exception:
-            pass
+    consumer = get_consumer()
+    await consumer.consume(
+        channel=channel,
+        websocket=websocket,
+    )

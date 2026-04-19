@@ -2,9 +2,11 @@ from typing import Optional
 
 from src.streamfleet_server.application.services.publisher import Publisher
 from src.streamfleet_server.infrastructure.redis.redis_adapter import RedisAdapter
+from src.streamfleet_server.application.services.consumer import Consumer
 
 _redis_adapter: Optional[RedisAdapter] = None
 _publisher: Optional[Publisher] = None
+_consumer: Optional[Consumer] = None
 
 
 def get_redis_adapter() -> RedisAdapter:
@@ -19,3 +21,9 @@ def get_publisher() -> Publisher:
     if _publisher is None:
         _publisher = Publisher(redis_adapter=get_redis_adapter())
     return _publisher
+
+def get_consumer() -> Consumer:
+    global _consumer
+    if _consumer is None:
+        _consumer = Consumer(redis_adapter=get_redis_adapter())
+    return _consumer

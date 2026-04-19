@@ -34,7 +34,7 @@ async def publish(websocket: WebSocket):
                 continue
             await asyncio.sleep(0)
             # Redis pub/sub payloads must be strings; wire format is the same base64 text.
-            publisher.publish(channel=client_id, message=data)
+            publisher.publish(channel=str(client_id), message=data)
     except WebSocketDisconnect:
         pass
     except Exception as err:
