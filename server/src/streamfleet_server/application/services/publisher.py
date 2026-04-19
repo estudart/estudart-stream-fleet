@@ -21,7 +21,7 @@ class Publisher:
             print(f"Redis publish failed: {err}")
             return False
 
-    async def run(websocket: WebSocket):
+    async def run(self, websocket: WebSocket):
         client_id = id(websocket)
         print(client_id)
         try:
