@@ -14,5 +14,5 @@ app.add_middleware(
 
 # Register routes (side-effect imports).
 import src.streamfleet_server.presentation.api.publish  # noqa: E402,F401
-import src.streamfleet_server.presentation.api.subscribe  # noqa: E402,F401
+import src.streamfleet_server.presentation.api.consume  # noqa: E402,F401
 import src.streamfleet_server.presentation.api.terminal  # noqa: E402,F401
