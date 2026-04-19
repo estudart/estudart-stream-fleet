@@ -21,13 +21,13 @@ class Publisher:
             print(f"Redis publish failed: {err}")
             return False
 
-    async def run(websocket: WebSocket):
+    async def run(self, websocket: WebSocket):
         client_id = id(websocket)
         print(client_id)
         try:
             while True:
                 data = await websocket.receive_text()
-                frame = decode_jpeg_base64_to_bgr(data)
+                frame = await decode_jpeg_base64_to_bgr(data)
                 if frame is None:
                     continue
                 await asyncio.sleep(0)
