@@ -27,7 +27,7 @@ class Publisher:
         try:
             while True:
                 data = await websocket.receive_text()
-                frame = decode_jpeg_base64_to_bgr(data)
+                frame = await decode_jpeg_base64_to_bgr(data)
                 if frame is None:
                     continue
                 await asyncio.sleep(0)
