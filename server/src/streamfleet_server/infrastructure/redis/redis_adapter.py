@@ -36,25 +36,6 @@ class RedisAdapter:
             pubsub.subscribe(*channels)
         return pubsub
 
-    def consume(self, channel: str) -> Iterator[str]:
-        """
-        Subscribe to ``channel`` and yield each message body (blocking generator).
-
-        Skips non-data frames (e.g. subscribe confirmations). Runs until the
-        generator is closed or the client disconnects.
-        """
-        pubsub = self._client.pubsub()
-        pubsub.subscribe(channel)
-        try:
-            for raw in pubsub.listen():
-                if raw.get("type") == "message":
-                    yield raw["data"]
-        finally:
-            try:
-                pubsub.close()
-            except redis.RedisError:
-                pass
-
     def close(self) -> None:
         """Close the underlying Redis connection pool."""
         self._client.close()
